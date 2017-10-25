@@ -1,0 +1,25 @@
+{
+  "name": "markdownparser",
+  "version": "1.0.0",
+  "description": "HTML-to-Markdown converter",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nasa8x/markdown-parser.git"
+  },
+  "keywords": [
+    "markdown",
+    "markdown parser",
+    "html to markdown",
+    "markdown convert"
+  ],
+  "author": "Nasa Nguyen",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/nasa8x/markdown-parser/issues"
+  },
+  "homepage": "https://github.com/nasa8x/markdown-parser#readme"
+}
