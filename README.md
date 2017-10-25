@@ -2,7 +2,7 @@ Javascript module Html to Markdown parser.
 
 ## Install
 
-```
+```js
 npm install markdownparser
 ```
 
@@ -22,7 +22,7 @@ Extraction of following markdown elements:
 
 ## Usage
 
-```
+```js
 var Markdown = require('markdownparser');
 
 var text = Markdown.parse('<h1>Hello world</h1>');
