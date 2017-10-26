@@ -18,8 +18,8 @@ module.exports = {
                 name: 'p',
                 //regex: /<p>([\s\S]*?)<\/p>/gim,
                 regex: /<p.*?>(.*?)<\/p>/gmi,
-                callback: function (matches) {
-                    return '$1\n';
+                callback: function () {
+                    return '\n$1\n';
                 }
     
             },
@@ -56,27 +56,29 @@ module.exports = {
                     return html;
                 }
             },
+
+             {
+                name: 'code',
+                regex: /<code.*?>([\s\S]*?)<\/code>/gim,
+                callback: function () {
+                    return '```$1```';
+                }
+            },
     
             {
                 name: 'pre',
                 regex: /<pre.*?>([\s\S]*?)<\/pre>/gim,
-                callback: function (matches) {
-                    return '`\n$1\n`';
+                callback: function () {
+                    return '\n```$1```\n';
                 }
             },
     
-            {
-                name: 'code',
-                regex: /<code.*?>([\s\S]*?)<\/code>/gim,
-                callback: function (matches) {
-                    return '```\n$1\n```';
-                }
-            },
+           
     
             {
                 name: 'blockquote',
                 regex: /<blockquote>([\s\S]*?)<\/blockquote>/gim,
-                callback: function (matches) {
+                callback: function () {
                     return '\n> $1\n';
                 }
             },
@@ -84,7 +86,7 @@ module.exports = {
             {
                 name: 'bold',
                 regex: /<(?:b|strong)>([\s\S]*?)<\/\w*>/gim,
-                callback: function (matches) {
+                callback: function () {
                     return '**$1**';
                 }
             },
@@ -92,30 +94,44 @@ module.exports = {
             {
                 name: 'italic',
                 regex: /<(?:i|em)>([\s\S]*?)<\/\w*>/gim,
-                callback: function (matches) {
-                    return '_$1_';
+                callback: function () {
+                    return '*$1*';
+                }
+            },
+            {
+                name: 'del',
+                regex: /<del.*?>([\s\S]*?)<\/\w*>/gim,
+                callback: function () {
+                    return '~~$1~~';
                 }
             },
     
             {
                 name: 'br',
                 regex: /<br.*?>/gim,
-                callback: function (matches) {
+                callback: function () {
                     return '\n';
+                }
+            },
+            {
+                name: 'hr',
+                regex: /<hr.*?>/gim,
+                callback: function () {
+                    return '\n* * *\n';
                 }
             },
     
             {
                 name: 'div',
                 regex: /<div.*?>(.*?)<\/div>/gim,
-                callback: function (matches) {
+                callback: function () {
                     return '$1\n';
                 }
             },
             {
                 name: 'a',
                 regex: /<a.*? href="([^"]+)".*?>([^<]+)<\/a>/gim,
-                callback: function (matches) {
+                callback: function () {
                     return '[$2]($1 "$2")';
                 }
     
@@ -123,7 +139,7 @@ module.exports = {
             {
                 name: 'image',
                 regex: /<img.*?src\s*=\s*['\"]([^'\"]*?)['\"][^>]*?>/gim,
-                callback: function (matches) {
+                callback: function () {
                     return '![]($1)';
                 }
             },
@@ -131,7 +147,7 @@ module.exports = {
             {
                 name: 'script',
                 regex: /<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi,
-                callback: function (matches) {
+                callback: function () {
                     return '';
                 }
             },
@@ -139,7 +155,7 @@ module.exports = {
             {
                 name: 'html',
                 regex: /<(?:.)*?>/gm,
-                callback: function (matches) {
+                callback: function () {
                     return '';
                 }
             },
