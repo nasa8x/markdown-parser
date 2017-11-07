@@ -59,7 +59,7 @@ module.exports = {
 
         {
 
-            name:'pre-code',
+            name: 'pre-code',
             regex: /<pre.*?>.*?<code.*?>([\s\S]*?)<\/code>.*?<\/pre>/gim,
             callback: function () {
                 return '```\n$1\n```';
@@ -182,7 +182,8 @@ module.exports = {
     parse: function (html, regexs) {
 
         if (html && html.length > 0) {
-            html = html.replace(/(<(code|pre|script|style|textarea)[^]+?<\/\2)|(^|>)\s+|\s+(?=<|$)/g, "$1$3");
+            //html = html.replace(/(<(code|pre|script|style|textarea)[^]+?<\/\2)|(^|>)\s+|\s+(?=<|$)/g, "$1$3");
+            //html = html.replace(/\s*(<[^>]+>)\s*/g, '$1');
 
             if (regexs) {
                 regexs = Array.isArray(regexs) ? regexs : [regexs];

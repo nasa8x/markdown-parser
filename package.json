@@ -1,6 +1,6 @@
 {
   "name": "markdownparser",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "HTML-to-Markdown converter",
   "main": "index.js",
   "scripts": {
