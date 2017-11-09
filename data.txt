@@ -1,237 +1,104 @@
-<div class="card-block html-content"><p><strong>ES6 acquainted another route with arrange modules. It's not the same as CommonJS and AMD we are as of now utilizing, which through the new catchphrases import and export</strong></p> <p class="card-text"><p>ES6 acquainted another route with arrange modules. It’s not the same as <code>CommonJS</code> and <code>AMD</code> we are as of now utilizing, which through the new catchphrases <code>import</code> and <code>export</code>. It still <strong>NOT</strong> being bolstered by the most recent form of Node.js. Be that as it may, luckily we can influence <code>Babel.js</code> to play it at this moment.</p>
-<p>When we are revamping the following form of Instant Message module of our creation - <a href="https://pro.worktile.com">Worktile Pro</a>, we utilized this element under Node.js v6 and <code>Babel.js</code>. So in this post I might want to present what it is and how I was utilizing.</p>
-<h3>Development Environment with <code>Babel.js</code></h3>
-<p><a href="https://babeljs.io/"><code>Bebel.js</code></a> is an open source JavaScript compiler which permits us to utilize most recent components, particularly something still in draft running in lower level runtime. For our situation, we require <code>Babel.js</code> to interpret and assemble our backend source code composed with ES6 and ES7 elements, to the code in ES6 that good with Node.js v6.</p>
-<p>The following is a piece of the <code>package.json</code> document we are utilizing.</p>
-<pre class="hljs" data-lang=""><code>{
-      "name": "Worktile Pro IM",
-      "version": "1.0.0",
-      "main": "app.js",
-      "scripts": {
-        "run": "babel-node app.js",
-        "build": "babel . -d .dist --ignore=\"node_modules\""
-      },
-      "devDependencies": {
-        "babel-cli": "*",
-        "babel-core": "*",
-        "babel-preset-es2015-node5": "*",
-        "babel-preset-stage-3": "*",
-        "babel-register": "*"
-      }
-    }
-</code></pre>
-<p>Additionally we require <code>.babelrc</code> record to characterize the practices of <code>Babel.js</code> as underneath.</p>
-<pre class="hljs" data-lang=""><code>    {
-      "presets": ["es2015-node5", "stage-3"],
-      "plugins": []
-    }
-</code></pre>
-<p>You can duplicate this document and utilize <code>npm install</code> to set up your workplace. In the event that you need to run your code with <code>Babel.js</code> without assembling, you can straightforward use <code>npm run-script run</code>, then <code>babel-cli</code> will incorporate your source code and execute in memory. This is great when advancement yet not underway, since it will utilize a considerable measure memory and drawback the execution of your application. When you regard your code, you can run <code>npm run-script build</code> to give <code>Babel.js</code> a chance to assemble the source code to a yield organizer (For my situation it’s <code>./.dist/</code>) when you can <code>node ./.dist/app.js</code>.</p>
-<p>For more data about <code>Babel.js</code>, <code>babel-node</code> and <code>Babel-cli</code> please allude to <a href="https://babeljs.io/docs/utilization/cli/">Babel’s document</a>.</p>
-<h3>Customary CommomJS</h3>
-<p>How about we make an exceptionally basic application with customary Node.js modules in <code>CommonJS</code> style. The following is <code>calc.js</code> record which will be utilized later.</p>
-<pre class="hljs" data-lang=""><code>'use strict';
+<p><em>The following is a short extract from our new book, PHP &#038; MySQL: Novice to Ninja, 6th Edition, written by Tom Butler and Kevin Yank. It&#8217;s the ultimate beginner&#8217;s guide to PHP. SitePoint Premium members get access with their membership, or you can buy a copy in stores worldwide.</em></p>
+<p>Now that you have your virtual server up and running, it’s time to write your first PHP script. PHP is a server-side language. This concept may be a little difficult to grasp, especially if you’ve only ever designed websites using client-side languages like HTML, CSS, and JavaScript.</p>
+<p>A server-side language is similar to JavaScript in that it allows you to embed little programs (scripts) into the HTML code of a web page. When executed, these programs give you greater control over what appears in the browser window than HTML alone can provide. The key difference between JavaScript and PHP is the stage of loading the web page at which these embedded programs are executed.</p>
+<p>Client-side languages like JavaScript are read and executed by the web browser after downloading the web page (embedded programs and all) from the web server. In contrast, server-side languages like PHP are run by the web <em>server</em>, before sending the web page to the browser. Whereas client-side languages give you control over how a page behaves once it’s displayed by the browser, server-side languages let you generate customized pages on the fly before they’re even sent to the browser.</p>
+<p>Once the web server has executed the PHP code embedded in a web page, the result takes the place of the PHP code in the page. All the browser sees is standard HTML code when it receives the page, hence the name “server-side language.” Let’s look at simple example of some PHP that generates a random number between 1 and 10 and then displays it on the screen: </p>
+<pre><code class="php language-php">
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+    &lt;head&gt;
+        &lt;meta charset=&quot;utf-8&quot;&gt;
+        &lt;title&gt;Random Number&lt;/title&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+        &lt;p&gt;Generating a random number between 1 and 10:
+            &lt;?php
 
-    exports.name = 'calc';
-    exports.add = (x, y) =&gt; {
-        return x + y;
-    };
-    exports.subtract = (x, y) =&gt; {
-        return x - y;
-    };
-    exports.multiple = (x, y) =&gt; {
-        return x * y;
-    };
-    exports.divide = (x, y) =&gt; {
-        return x / y;
-    };
-</code></pre>
-<p>The following is the way we can utilize it.</p>
-<pre class="hljs" data-lang=""><code>  'use strict';
+            echo rand(1, 10);
 
-    const calc = require('./calc');
-
-    const x = 3;
-    const y = 5;
-
-    console.log(`${calc.name}`);
-
-    const result_add = calc.add(x, y);
-    console.log(`${x} + ${y} = ${result_add}`);
-
-    const result_subtract = calc.subtract(x, y);
-    console.log(`${x} - ${y} = ${result_subtract}`);
-
-    const result_multiple = calc.multiple(x, y);
-    console.log(`${x} * ${y} = ${result_multiple}`);
-
-    const result_divide = calc.divide(x, y);
-    console.log(`${x} / ${y} = ${result_divide}`);
-</code></pre>
-<p>Since it’s in ES5 language structure we can essentially execute by <code>node app.js</code>.</p>
-<p><img src="http://i.imgur.com/XrNrkP8.png" alt="enter image description here" title="enter image title here"></p>
-<h3>Send out Variables and Import</h3>
-<p>ES6 <code>export</code> works fundamentally the same as with the way we are utilizing already. Fundamentally we can utilize <code>export</code> watchword to any variables characterized in the module source code. For instance, we can send out <code>name</code> by utilizing <code>export const name = 'calc';</code>. So this module can be overhaul as underneath.</p>
-<pre class="hljs" data-lang=""><code> 'use strict';
-
-    export const name = 'calc';
-
-    export const add = (x, y) =&gt; {
-        return x + y;
-    };
-
-    export const subtract = (x, y) =&gt; {
-        return x - y;
-    };
-
-    export const multiple = (x, y) =&gt; {
-        return x * y;
-    };
-
-    export const divide = (x, y) =&gt; {
-        return x / y;
-    };
-</code></pre>
-<p>At the point when utilizing this module we require <code>import</code> watchword. Comparable as <code>require</code> we have to determine the way of this module and dole out as a variable. At that point we can utilize capacities characterized in <code>calc.js</code> not surprisingly.</p>
-<pre class="hljs" data-lang=""><code>'use strict';
-
-    import * as calc from './calc';
-
-    const x = 3;
-    const y = 5;
-
-    console.log(`${calc.name}`);
-
-    const result_add = calc.add(x, y);
-    console.log(`${x} + ${y} = ${result_add}`);
-
-    const result_subtract = calc.subtract(x, y);
-    console.log(`${x} - ${y} = ${result_subtract}`);
-
-    const result_multiple = calc.multiple(x, y);
-    console.log(`${x} * ${y} = ${result_multiple}`);
-
-    const result_divide = calc.divide(x, y);
-    console.log(`${x} / ${y} = ${result_divide}`);
-</code></pre>
-<p>Since we are utilizing <code>export</code> and <code>import</code> watchwords which is <strong>NOT</strong> bolstered in Node.js v6, we will got mistake if simply run it by <code>node app.js</code>.</p>
-<p><img src="https://i.imgur.com/ewkvFbr.png" alt="enter image description here" title="enter image title here"></p>
-<p>We require use <code>Babel.js</code> to arrange it to the code Node.js backings and run it by utilizing <code>npm run-script run</code>, and you can see it works.</p>
-<p><img src="https://i.imgur.com/5WpGHvx.png" alt="enter image description here" title="enter image title here"></p>
-<p>In the code beneath, we utilize <code>import * as calc</code>, which implies it will import all variables this module sends out, as properties of <code>calc</code>. On the other hand we can simply import a few variables we need and utilize then as independent variables as beneath.</p>
-<pre class="hljs" data-lang=""><code>'use strict';
-
-    import {name, add, subtract} from './calc';
-
-    const x = 3;
-    const y = 5;
-
-    console.log(`${name}`);
-
-    const result_add = add(x, y);
-    console.log(`${x} + ${y} = ${result_add}`);
-
-    const result_subtract = subtract(x, y);
-    console.log(`${x} - ${y} = ${result_subtract}`);
-</code></pre>
-<p><img src="https://i.imgur.com/Helnu3R.png" alt="enter image description here" title="enter image title here"></p>
-<h3>Default Export</h3>
-<p>Once in a while we have to send out only one variable. For this situation we utilize <code>export default</code>. For instance, in the code beneath I wrapped all variables into one protest and sent out as default.</p>
-<pre class="hljs" data-lang=""><code>    'use strict';
-
-    export default {
-        name: 'calc',
-        add: (x, y) =&gt; {
-            return x + y;
-        },
-        subtract: (x, y) =&gt; {
-            return x - y;
-        },
-        multiple: (x, y) =&gt; {
-            return x * y;
-        },
-        divide: (x, y) =&gt; {
-            return x / y;
-        }
-    };
-</code></pre>
-<p>Presently we can import it into a variable.</p>
-<pre class="hljs" data-lang=""><code>    'use strict';
-
-    import calc from './calc';
-
-    const x = 3;
-    const y = 5;
-
-    console.log(`${calc.name}`);
-
-    const result_add = calc.add(x, y);
-    console.log(`${x} + ${y} = ${result_add}`);
-
-    const result_subtract = calc.subtract(x, y);
-    console.log(`${x} - ${y} = ${result_subtract}`);
-
-    const result_multiple = calc.multiple(x, y);
-    console.log(`${x} * ${y} = ${result_multiple}`);
-
-    const result_divide = calc.divide(x, y);
-    console.log(`${x} / ${y} = ${result_divide}`);
-</code></pre>
-<p><img src="https://i.imgur.com/mHo3MIa.png" alt="enter image description here" title="enter image title here"></p>
-<p>Default fare is exceptionally valuable when sending out a class. For instance, the code beneath we characterized our <code>calc.js</code> as a class and fare. &gt;Note when trading a class, do <strong>NOT</strong> attach semi-comma toward the end of the code.</p>
-<pre class="hljs" data-lang=""><code>
-    'use strict';
-
-    export default class Calc {
-        constructor (x, y) {
-            this.x = x;
-            this.y = y;
-        }
-
-        add () {
-            return this.x + this.y;
-        }
-
-        subtract () {
-            return this.x - this.y;
-        }
-
-        multiple () {
-            return this.x * this.y;
-        }
-
-        divide () {
-            return this.x / this.y;
-        }
-    }
-</code></pre>
-<p>The following is the code we are utilizing this class.</p>
-<pre class="hljs" data-lang=""><code>'use strict';
-
-    import Calc from './calc';
-
-    const x = 3;
-    const y = 5;
-    const calc = new Calc(x, y);
-
-    const result_add = calc.add();
-    console.log(`${x} + ${y} = ${result_add}`);
-
-    const result_subtract = calc.subtract();
-    console.log(`${x} - ${y} = ${result_subtract}`);
-
-    const result_mutiple = calc.mutiple();
-    console.log(`${x} * ${y} = ${result_mutiple}`);
-
-    const result_divide = calc.divide();
-    console.log(`${x} / ${y} = ${result_divide}`);
-</code></pre>
-<h3>Summary</h3>
-<p>In this post I portrayed the <code>import</code> and <code>export</code> highlight in ES6 and how we are utilizing it as a part of Node.js v6 with <code>Babel.js</code>. Fundamentally it doesn’t furnish significant improvement contrasting and the first <code>CommonJS</code> module framework. In any case, with the update of Node.js and web programs, this component ought to be utilized broadly and supplant current <code>CommonJS</code> and <code>AMD</code> I think.</p>
-<h3>Suggest</h3>
-<p>☞ <a href="https://codek.tv/v/WxfufQVg8dU" rel="follow" title="Building Line Of Business Apps With Isomorphic React/Node" target="_blank">Building Line Of Business Apps With Isomorphic React/Node</a></p>
-<p>☞ <a href="https://codek.tv/v/fFgLjwHcYdo" rel="follow" title="Node.js Tutorial with Visual Studio Code over 4 Hours" target="_blank">Node.js Tutorial with Visual Studio Code over 4 Hours</a></p>
-<p>☞ <a href="https://codequs.com/a/ryeA19EO" rel="follow" title="Node.js Tutorials: The Web Developer Bootcamp" target="_blank">Node.js Tutorials: The Web Developer Bootcamp</a></p>
-<p>☞ <a href="https://codequs.com/a/ByCmVjmu" rel="follow" title="Angular 2 and NodeJS - The Practical Guide to MEAN Stack 2.0" target="_blank">Angular 2 and NodeJS - The Practical Guide to MEAN Stack 2.0</a></p>
-<p>☞ <a href="https://codequs.com/a/SyEf85O_" rel="follow" title="Complete Node JS Developer Course Building 5 Real World Apps" target="_blank">Complete Node JS Developer Course Building 5 Real World Apps</a></p>
-</p></div>
+            ?&gt;
+        &lt;/p&gt;
+    &lt;/body&gt;
+&lt;/html&gt;
+                  </code></pre>
+<p>Most of this is plain HTML. Only the line between <code>&lt;?php</code> and <code>?&gt;</code> is PHP code. <code>&lt;?php</code> marks the start of an embedded PHP script and <code>?&gt;</code> marks its end. The web server is asked to interpret everything between these two delimiters and convert it to regular HTML code before it sends the web page to the requesting browser. If you right-click inside your browser and choose <strong>View Source</strong> (the text may be different depending on the browser you’re using) you can see that the browser is presented with the following:</p>
+<pre><code class="html language-html">
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+    &lt;head&gt;
+        &lt;meta charset=&quot;utf-8&quot;&gt;
+        &lt;title&gt;Random Number&lt;/title&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+        &lt;p&gt;Generating a random number between 1 and 10:
+            5
+        &lt;/p&gt;
+    &lt;/body&gt;
+&lt;/html&gt;
+            </code></pre>
+<p>Notice that all signs of the PHP code have disappeared. In its place the output of the script has appeared, and it looks just like standard HTML. This example demonstrates several advantages of server-side scripting …</p>
+<ul>
+<li><strong>No browser compatibility issues</strong>. PHP scripts are interpreted by the web server alone, so there’s no need to worry about whether the language features you’re using are supported by the visitor’s browser.</li>
+<li><strong>Access to server-side resources</strong>. In the example above, we placed a random number generated by the web server into the web page. If we had inserted the number using JavaScript, the number would be generated in the browser and someone could potentially amend the code to insert a specific number. Granted, there are more impressive examples of the exploitation of server-side resources, such as inserting content pulled out of a MySQL database.</li>
+<li><strong>Reduced load on the client</strong>. JavaScript can delay the display of a web page significantly (especially on mobile devices!) as the browser must run the script before it can display the web page. With server-side code, this burden is passed to the web server, which you can make as beefy as your application requires (and your wallet can afford).</li>
+<li><strong>Choice</strong>. When writing code that’s run in the browser, the browser has to understand how to run the code given to it. All modern browsers understand HTML, CSS and JavaScript. To write some code that’s run in the browser, you must use one of these languages. By running code on the server that generates HTML, you have a choice of many languages—one of which is PHP.</li>
+</ul>
+<h2 id="basic-syntax-and-statements">Basic Syntax and Statements</h2>
+<p>PHP syntax will be very familiar to anyone with an understanding of JavaScript, C, C++, C#, Objective-C, Java, Perl, or any other C-derived language. But if these languages are unfamiliar to you, or if you’re new to programming in general, there’s no need to worry about it.</p>
+<p>A PHP script consists of a series of <strong>commands</strong>, or statements. Each statement is an instruction that must be followed by the web server before it can proceed to the next instruction. PHP statements, like those in the aforementioned languages, are always terminated by a semicolon (<code>;</code>).</p>
+<p>This is a typical PHP statement:</p>
+<pre><code class="php language-php">echo &#39;This is a &lt;strong&gt;test&lt;/strong&gt;!&#39;;
+            </code></pre>
+<p>This is an <code>echo</code> statement, which is used to generate content (usually HTML code) to send to the browser. An <code>echo</code> statement simply takes the text it’s given and inserts it into the page’s HTML code at the position of the PHP script where it was contained.</p>
+<p>In this case, we’ve supplied a string of text to be output: <code>This is a &lt;strong&gt;test&lt;/strong&gt;!</code>. Notice that the string of text contains HTML tags (<code>&lt;strong&gt;</code> and <code>&lt;/strong&gt;</code>), which is perfectly acceptable.</p>
+<p>So, if we take this statement and put it into a complete web page, here’s the resulting code:</p>
+<pre><code class="php language-php">&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+    &lt;head&gt;
+        &lt;meta charset=&quot;utf-8&quot;&gt;
+        &lt;title&gt;Test page&lt;/title&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+        &lt;p&gt;&lt;?php echo &#39;This is a &lt;strong&gt;test&lt;/strong&gt;!&#39;; ?&gt;&lt;/p&gt;
+    &lt;/body&gt;
+&lt;/html&gt;
+                    </code></pre>
+<p>If you place this file on your web server and then request it using a web browser, your browser will receive this HTML code:</p>
+<pre><code class="html language-html">&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+    &lt;head&gt;
+        &lt;meta charset=&quot;utf-8&quot;&gt;
+        &lt;title&gt;Test page&lt;/title&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+        &lt;p&gt;This is a &lt;strong&gt;test&lt;/strong&gt;!&lt;/p&gt;
+    &lt;/body&gt;
+&lt;/html&gt;
+            </code></pre>
+<p>The <code>random.php</code> example we looked at earlier contained a slightly more complex <code>echo</code> statement:</p>
+<pre><code class="php language-php">
+echo rand(1, 10);
+            </code></pre>
+<p>You’ll notice that, in the first example, PHP is given some text to print directly, and in the second, PHP is given an instruction to follow. PHP tries to read anything that exists outside quotes as an instruction it must follow. Anything inside quotes is treated as a <strong>string</strong>, which means PHP doesn’t process it at all but just passes it to the command you called. So the following code will pass the string <code>This is a &lt;strong&gt;test&lt;/strong&gt;!</code> directly to the <code>echo</code> command:</p>
+<pre><code class="php language-php">
+echo &#39;This is a &lt;strong&gt;test&lt;/strong&gt;!&#39;;
+            </code></pre>
+<p>A string is signified using a start quote and an end quote. PHP will see the first <code>&#39;</code> as the start of the string and find the next <code>&#39;</code> and use that as the end of the string.</p>
+<p>In contrast, the following code will first run the built-in function <code>rand</code> to generate a random number and then pass the result to the echo command:</p>
+<pre><code class="php language-php">
+echo rand(1, 10);
+            </code></pre>
+<p>You can think of built-in functions as tasks that PHP knows how to do without you needing to spell out the details. PHP has many built-in functions that let you do everything, from sending email to working with information stored in various types of databases.</p>
+<p>PHP won’t try to run anything that’s inside a string. The following code won’t have the result you may be expecting:</p>
+<pre><code class="php language-php">
+echo &#39;rand(1, 10)&#39;;
+           </code></pre>
+<p>Instead of running the inbuilt function <code>rand</code>, PHP will see it as a string, and rather than printing out a random number, it will actually send the text <code>rand(1, 10)</code> to the browser, which probably isn’t what you wanted to do. It’s important to understand the difference between a string and <em>code</em>. PHP will see any text outside quotes as a series of commands it should follow. Anything inside quotes is a string and is <em>data</em> that PHP will work with.</p>
+<p>PHP doesn’t try to understand strings. They can contain any characters in any order. But code—which is essentially a series of <em>instructions</em>—must follow a rigid structure for a computer to understand it.</p>
+<p>When you <strong>invoke</strong> a function in PHP—that is, ask it to do its job—you’re said to be <strong>calling</strong> that function. Most functions return a value when they’re called; PHP then behaves as if you’d actually just typed that returned value in your code instead. In the <code>echo &#39;rand(1, 10)&#39;;</code> example, our <code>echo</code> statement contains a call to the <code>rand</code> function, which returns a random number as a string of text. The <code>echo</code> statement then outputs the value returned by the function call.</p>
+<p>Every function in PHP can have one or more <strong>arguments</strong> that allow you to make the function behave in a slightly different way. The <code>rand</code> function takes two arguments: the minimum random number and the maximum. By changing the values that are passed to the function, you’re able to change the way it works. For example, if you wanted a random number between 1 and 50, you could use the code:</p>
+<pre><code class="php language-php">
+echo rand(1, 50);
+           </code></pre>
+<p>You may wonder why we need to surround the arguments with parentheses (<code>(1, 50)</code>). The parentheses serve two purposes. First, they indicate that <code>rand</code> is a function that you want to call. Second, they mark the beginning and end of a list of arguments—PHP statements that you wish to provide—in order to tell the function what you want it to do. In the case of the <code>rand</code> function, you need to provide a minimum and a maximum value. Those values are separated by a comma.</p>
+<p>Later on, we’ll look at functions that take different kinds of arguments. We’ll also consider functions that take no arguments at all. These functions will still need the parentheses, even though there will be nothing to type between them.</p>

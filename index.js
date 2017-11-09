@@ -179,6 +179,14 @@ module.exports = {
 
 
     ],
+
+    decode: function (str) {
+
+        return str.replace(/&amp;/g, '&').replace(/&gt;/g, '>').replace(/&lt;/g, '<').replace(/&quot;/g, '"').replace(/&#(\d+);/g, function (match, dec) {
+            return String.fromCharCode(dec);
+        });
+
+    },
     parse: function (html, regexs) {
 
         if (html && html.length > 0) {
@@ -199,11 +207,11 @@ module.exports = {
                             txt = p.callback(matches);
                         }
 
-                        html = html.replace(p.regex, txt).trim();
+                        html = html.replace(p.regex, txt);
                     }
                 }
             });
         }
-        return html;
+        return this.decode(html);
     }
 }
