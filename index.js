@@ -11,7 +11,7 @@ module.exports = {
                 for (var x = 0; x < count; x++) {
                     string += '#'
                 }
-                return string + ' $2\n';
+                return string +' '+ this.trim(matches[2]) + '\n';
             }
         },
         {
