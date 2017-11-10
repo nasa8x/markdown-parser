@@ -34,10 +34,10 @@ module.exports = {
                 var m = [];
                 while (m = regex.exec(html)) {
                     if (m) {
-                        html = html.replace(regex, '* $1\n');
+                        html = this.trim(html.replace(regex, '* $1{x}'));
                     }
                 }
-                return html;
+                return html.replace(/{x}/g, '\n');
 
             }
         },
@@ -50,10 +50,10 @@ module.exports = {
                 var m = [];
                 while (m = regex.exec(html)) {
                     if (m) {
-                        html = html.replace(regex, '1. $1\n');
+                        html = this.trim(html.replace(regex, '1. $1{x}')) + '\n';
                     }
                 }
-                return html;
+                return html.replace(/{x}/g, '\n');
             }
         },
 
@@ -86,9 +86,9 @@ module.exports = {
 
         {
             name: 'blockquote',
-            regex: /<blockquote>([\s\S]*?)<\/blockquote>/gim,
-            callback: function () {
-                return '\n> $1\n';
+            regex: /<blockquote.*?>([\s\S]*?)<\/blockquote>/gim,
+            callback: function (matches) {
+                return '> ' + this.trim(matches[1]);
             }
         },
 
@@ -187,12 +187,13 @@ module.exports = {
         });
 
     },
+    trim: function (str) {
+        return str.replace(/(?:(?:^|\n)\s+|\s+(?:$|\n))/g, '').replace(/\s+/g, ' ');
+    },
     parse: function (html, regexs) {
-
+        var _t = this;
         if (html && html.length > 0) {
-            //html = html.replace(/(<(code|pre|script|style|textarea)[^]+?<\/\2)|(^|>)\s+|\s+(?=<|$)/g, "$1$3");
-            //html = html.replace(/\s*(<[^>]+>)\s*/g, '$1');
-
+          
             if (regexs) {
                 regexs = Array.isArray(regexs) ? regexs : [regexs];
                 this._patterns.concat(regexs);
@@ -204,7 +205,7 @@ module.exports = {
                     if (matches) {
                         var txt = '$1';
                         if (p.callback && typeof (p.callback) === 'function') {
-                            txt = p.callback(matches);
+                            txt = p.callback.call(_t, matches);
                         }
 
                         html = html.replace(p.regex, txt);
