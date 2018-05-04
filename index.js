@@ -4,7 +4,7 @@ module.exports = {
     _patterns: [
         {
             name: 'heading',
-            regex: /<h(\d*).*?>([\s\S]*?)<\/h\d*>/gim,
+            regex: /<h(\d*).*?>(.*?)<\/h\d*>/im,          
             callback: function (matches) {
                 var count = parseInt(matches[1]);
                 var string = '';
