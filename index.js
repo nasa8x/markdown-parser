@@ -183,18 +183,24 @@ module.exports = {
 
     escape: function (html) {
         return html
-            .replace(/&/g, "&amp;")
             .replace(/</g, "&lt;")
-            .replace(/>/g, "&gt;")
-            .replace(/"/g, "&quot;")
-            .replace(/'/g, "&#039;");
+            .replace(/>/g, "&gt;");
+        // .replace(/"/g, "&quot;")
+        // .replace(/'/g, "&#039;");
     },
 
     decode: function (str) {
 
-        return str.replace(/&nbsp;/g, ' ').replace(/&amp;/g, '&').replace(/&gt;/g, '>').replace(/&lt;/g, '<').replace(/&quot;/g, '"').replace(/&#(\d+);/g, function (match, dec) {
-            return String.fromCharCode(dec);
-        });
+
+
+        return str.replace(/&nbsp;/g, ' ')
+            .replace(/&amp;/g, '&')
+            .replace(/&gt;/g, '>')
+            .replace(/&lt;/g, '<')
+            .replace(/&quot;/g, '"')
+            .replace(/&#(\d+);/g, function (match, dec) {
+                return String.fromCharCode(dec);
+            });
 
     },
     trim: function (str) {
