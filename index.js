@@ -2,16 +2,51 @@
 module.exports = {
 
     _patterns: [
+
+        {
+            name: 'blockquote',
+            regex: /<blockquote.*?>([\s\S]*?)<\/blockquote>/gim,
+            callback: function (matches) {
+                return '> ' + this.trim(matches[1]);
+            }
+        },
+
+        {
+
+            name: 'pre-code',
+            regex: /<pre.*?>.*?<code.*?>([\s\S]*?)<\/code>.*?<\/pre>/gim,
+            callback: function (matches) {
+                return '```\n' + this.escape(matches[1]) + '\n```';
+                //return '\n```\n$1\n```\n';
+            }
+        },
+
+        {
+            name: 'code',
+            regex: /<code.*?>([\s\S]*?)<\/code>/gim,
+            callback: function (matches) {
+                return '```' + this.escape(matches[1]) + '```';
+            }
+        },
+
+        {
+            name: 'pre',
+            regex: /<pre.*?>([\s\S]*?)<\/pre>/gim,
+            callback: function (matches) {
+                return '\n```\n' + this.escape(matches[1]) + '\n```\n';
+            }
+        },
+
         {
             name: 'heading',
-            regex: /<h(\d*).*?>(.*?)<\/h\d*>/im,          
+            regex: /<h(\d*).*?>(.*?)<\/h\d*>/im,
             callback: function (matches) {
                 var count = parseInt(matches[1]);
                 var string = '';
                 for (var x = 0; x < count; x++) {
                     string += '#'
                 }
-                return string +' '+ this.trim(matches[2]) + '\n';
+                return string + ' ' + this.trim(matches[2]) + '\n';
             }
         },
         {
@@ -27,70 +62,36 @@ module.exports = {
 
         {
             name: 'ul',
-            regex: /<ul.*?>([\s\S]*?)<\/ul>/gim,
+            regex: /<ul.*?>([\s\S]*?)<\/ul>/im,
             callback: function (matches) {
                 var html = matches[1];
-                var regex = /<li>([\s\S]*?)<\/li>/gim;
+                var regex = /<li>([\s\S]*?)<\/li>/i;
                 var m = [];
                 while (m = regex.exec(html)) {
                     if (m) {
                         html = this.trim(html.replace(regex, '* $1{x}'));
                     }
                 }
-                return html.replace(/{x}/g, '\n');
+                return html.replace(/{x}/g, '\n');;
 
             }
         },
         {
             name: 'ol',
-            regex: /<ol.*?>([\s\S]*?)<\/ol>/gim,
+            regex: /<ol.*?>([\s\S]*?)<\/ol>/im,
             callback: function (matches) {
                 var html = matches[1];
-                var regex = /<li>([\s\S]*?)<\/li>/gim;
+                var regex = /<li>([\s\S]*?)<\/li>/i;
                 var m = [];
                 while (m = regex.exec(html)) {
                     if (m) {
-                        html = this.trim(html.replace(regex, '1. $1{x}')) + '\n';
+                        html = this.trim(html.replace(regex, '1. $1{x}'));
                     }
                 }
                 return html.replace(/{x}/g, '\n');
             }
         },
 
-        {
-
-            name: 'pre-code',
-            regex: /<pre.*?>.*?<code.*?>([\s\S]*?)<\/code>.*?<\/pre>/gim,
-            callback: function () {
-                return '```\n$1\n```';
-            }
-        },
-
-        {
-            name: 'code',
-            regex: /<code.*?>([\s\S]*?)<\/code>/gim,
-            callback: function () {
-                return '```$1```';
-            }
-        },
-
-        {
-            name: 'pre',
-            regex: /<pre.*?>([\s\S]*?)<\/pre>/gim,
-            callback: function () {
-                return '\n```\n$1\n```\n';
-            }
-        },
-
-
-
-        {
-            name: 'blockquote',
-            regex: /<blockquote.*?>([\s\S]*?)<\/blockquote>/gim,
-            callback: function (matches) {
-                return '> ' + this.trim(matches[1]);
-            }
-        },
 
         {
             name: 'bold',
@@ -180,9 +181,18 @@ module.exports = {
 
     ],
 
+    escape: function (html) {
+        return html
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    },
+
     decode: function (str) {
 
-        return str.replace(/&amp;/g, '&').replace(/&gt;/g, '>').replace(/&lt;/g, '<').replace(/&quot;/g, '"').replace(/&#(\d+);/g, function (match, dec) {
+        return str.replace(/&nbsp;/g, ' ').replace(/&amp;/g, '&').replace(/&gt;/g, '>').replace(/&lt;/g, '<').replace(/&quot;/g, '"').replace(/&#(\d+);/g, function (match, dec) {
             return String.fromCharCode(dec);
         });
 
@@ -193,7 +203,7 @@ module.exports = {
     parse: function (html, regexs) {
         var _t = this;
         if (html && html.length > 0) {
-          
+
             if (regexs) {
                 regexs = Array.isArray(regexs) ? regexs : [regexs];
                 this._patterns.concat(regexs);

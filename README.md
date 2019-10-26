@@ -30,6 +30,9 @@ var text = Markdown.parse('<h1>Hello world</h1>');
 
 ```
 
+[Markdown Editor](https://github.com/nasa8x/v-markdown-editor)
+
+
 ## License
 
 The MIT License (MIT)

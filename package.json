@@ -1,6 +1,6 @@
 {
   "name": "markdownparser",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "HTML-to-Markdown converter",
   "main": "index.js",
   "scripts": {
@@ -16,7 +16,7 @@
     "html to markdown",
     "markdown convert"
   ],
-  "author": "Nasa Nguyen",
+  "author": "Nasa8x",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/nasa8x/markdown-parser/issues"
