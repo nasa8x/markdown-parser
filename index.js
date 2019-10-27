@@ -5,7 +5,7 @@ module.exports = {
 
         {
             name: 'blockquote',
-            regex: /<blockquote.*?>([\s\S]*?)<\/blockquote>/gim,
+            regex: /<blockquote.*?>([\s\S]*?)<\/blockquote>/im,
             callback: function (matches) {
                 return '> ' + this.trim(matches[1]);
             }
@@ -14,7 +14,7 @@ module.exports = {
         {
 
             name: 'pre-code',
-            regex: /<pre.*?>.*?<code.*?>([\s\S]*?)<\/code>.*?<\/pre>/gim,
+            regex: /<pre.*?>.*?<code.*?>([\s\S]*?)<\/code>.*?<\/pre>/im,
             callback: function (matches) {
                 return '```\n' + this.escape(matches[1]) + '\n```';
                 //return '\n```\n$1\n```\n';
@@ -23,7 +23,7 @@ module.exports = {
 
         {
             name: 'code',
-            regex: /<code.*?>([\s\S]*?)<\/code>/gim,
+            regex: /<code.*?>([\s\S]*?)<\/code>/im,
             callback: function (matches) {
                 return '```' + this.escape(matches[1]) + '```';
             }
@@ -31,7 +31,7 @@ module.exports = {
 
         {
             name: 'pre',
-            regex: /<pre.*?>([\s\S]*?)<\/pre>/gim,
+            regex: /<pre.*?>([\s\S]*?)<\/pre>/im,
             callback: function (matches) {
                 return '\n```\n' + this.escape(matches[1]) + '\n```\n';
             }
